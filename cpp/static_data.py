@@ -28,6 +28,13 @@ __author__ = 'nnorwitz@google.com (Neal Norwitz)'
 
 def _find_warnings(filename, lines, ast_list, static_is_optional):
     def print_warning(node):
+        if node.name is None:
+            #print("Could not parse NoneType")
+            print("{}:{}: static data '{}'".format(
+                                                   filename,
+                                                   lines.get_line_number(node.start),
+                                                   "Could not parse NoneType"))
+            return
         for name in node.name.split(','):
             print("{}:{}: static data '{}'".format(
                 filename,
@@ -75,6 +82,13 @@ def _get_static_declarations(ast_list):
     for node in ast_list:
         if (isinstance(node, ast.VariableDeclaration) and
                 'static' in node.type.modifiers):
+            if node.name is None:
+            #print("Could not parse NoneType")
+                print("{}:{}: static data '{}'".format(
+                                                   filename,
+                                                   lines.get_line_number(node.start),
+                                                   "Could not parse NoneType"))
+                return
             for name in node.name.split(','):
                 yield (name, node)
 

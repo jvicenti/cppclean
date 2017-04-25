@@ -644,7 +644,9 @@ class ASTBuilder(object):
                 self.namespaces.append(False)
                 continue
             if token.name == '}':
-                if self.namespaces.pop():
+                if len(self.namespaces) == 0:
+                    print ("Not popping an empty list")
+                elif self.namespaces.pop():
                     self.namespace_stack.pop()
                 continue
 
@@ -778,7 +780,8 @@ class ASTBuilder(object):
             if name.startswith('undef'):
                 # Remove "undef".
                 name = name[5:].strip()
-                assert name
+                print("not asserting name")
+                #assert name
                 self.define.discard(name)
         return None
 
@@ -1536,7 +1539,8 @@ class ASTBuilder(object):
         return Using(tokens[0].start, tokens[0].end, tokens)
 
     def handle_explicit(self):
-        assert self.in_class
+        #assert self.in_class
+        print("Intentionally not asserting here")
         # Nothing much to do.
         # TODO(nnorwitz): maybe verify the method name == class name.
         # This must be a ctor.
